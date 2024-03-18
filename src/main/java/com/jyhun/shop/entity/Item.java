@@ -1,19 +1,19 @@
 package com.jyhun.shop.entity;
 
 import com.jyhun.shop.constant.ItemSellStatus;
+import com.jyhun.shop.dto.ItemFormDto;
+import com.jyhun.shop.exception.OutOfStockException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name="item")
+@Table(name = "item")
 @Getter
 @Setter
 @ToString
-public class Item {
+public class Item extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Item {
     @Column(nullable = false, length = 50)
     private String itemName;
 
-    @Column(name = "price",nullable = false)
+    @Column(name = "price", nullable = false)
     private int price;
 
     @Column(nullable = false)
@@ -34,8 +34,24 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
-    private LocalDateTime regTime;
+    public void updateItem(ItemFormDto itemFormDto) {
+        this.itemName = itemFormDto.getItemName();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 
-    private LocalDateTime updateTime;
+    public void removeStock(int stockNumber) {
+        int restStock = this.stockNumber - stockNumber;
+        if (restStock < 0) {
+            throw new OutOfStockException("상품의 재고가 부족 합니다. (현재 재고 수량: " + this.stockNumber + ")");
+        }
+        this.stockNumber = restStock;
+    }
+
+    public void addStock(int stockNumber) {
+        this.stockNumber += stockNumber;
+    }
 
 }

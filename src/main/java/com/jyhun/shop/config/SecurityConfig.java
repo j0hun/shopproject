@@ -1,5 +1,6 @@
 package com.jyhun.shop.config;
 
+
 import com.jyhun.shop.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +32,12 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)) // 기존에 생성된 사용자 세션도 invalidateHttpSession 을 통해 삭제하도록 처리//
         ;
 
-        http.authorizeHttpRequests(authorize -> authorize
+        http.authorizeRequests()
                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated());
+                .anyRequest().authenticated()
+        ;
 
 
         http.exceptionHandling(authenticationManager -> authenticationManager

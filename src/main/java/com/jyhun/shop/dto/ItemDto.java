@@ -11,7 +11,7 @@ public class ItemDto {
 
     private Long id;
     private String itemName;
-    private Integer prie;
+    private Integer price;
     private String itemDetail;
     private String sellStatCd;
     private LocalDateTime regTime;

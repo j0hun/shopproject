@@ -1,6 +1,6 @@
 package com.jyhun.shop.controller;
 
-import com.jyhun.shop.dto.MemberDto;
+import com.jyhun.shop.dto.MemberFormDto;
 import com.jyhun.shop.entity.Member;
 import com.jyhun.shop.service.MemberService;
 import jakarta.validation.Valid;
@@ -23,22 +23,22 @@ public class MemberController {
 
     @GetMapping("/new")
     public String memberForm(Model model) {
-        model.addAttribute("memberDto", new MemberDto());
+        model.addAttribute("memberFormDto", new MemberFormDto());
         return "member/memberForm";
     }
 
     @PostMapping("/new")
-    public String newMember(@Valid MemberDto memberDto, BindingResult bindingResult, Model model){
+    public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "member/memberForm";
         }
 
         try {
-            Member member = Member.createMember(memberDto, passwordEncoder);
+            Member member = Member.createMember(memberFormDto, passwordEncoder);
             memberService.saveMember(member);
         } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage",e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
             return "member/memberForm";
         }
 

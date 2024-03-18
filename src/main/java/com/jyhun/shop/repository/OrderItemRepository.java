@@ -1,12 +1,9 @@
 package com.jyhun.shop.repository;
 
-import com.jyhun.shop.entity.Member;
+import com.jyhun.shop.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member,Long> {
-
-    Member findByEmail(String email);
-
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }
